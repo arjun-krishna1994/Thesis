@@ -8,7 +8,7 @@ class SensorDetailResource(resource.Resource):
     def __init__(self, sensor_number):
         super(SensorDetailResource, self).__init__()
         import os
-        host = os.environ('sensor_%s_addr'%(str(sensor_number)))
+        host = os.environ['sensor_%s_addr'%(str(sensor_number))]
         import json
         content = json.dumps({'host':host, 'port':'5683', 'uri': 'reading' + str(sensor_number)}) 
         self.content = content.encode("ascii")

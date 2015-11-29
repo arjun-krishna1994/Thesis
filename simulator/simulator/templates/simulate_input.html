@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Simulator</title>
+</head>
+<script>
+    function ajaxRequest(){
+		if (window.XMLHttpRequest)
+  		{// code for IE7+, Firefox, Chrome, Opera, Safari
+  			xmlhttp=new XMLHttpRequest();
+  		}
+		else
+  		{// code for IE6, IE5
+  			xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  		}
+			return xmlhttp;
+		}
+    function activate_sensor(sensor_number){
+        var pathway = document.getElementById('pathway').value;
+        var ajax_request = ajaxRequest();
+        ajax_request.onreadystatechange = function(){
+            if (ajax_request.readyState == 4 && ajax_request.status == 200){
+                alert("Input recorded on sensor " + sensor_number);
+            }
+        }
+        ajax_request.open("GET", "{%  url 'activate-sensor' %}" + "?pk=" + sensor_number +"&pathway=" + pathway , true);
+        ajax_request.send();
+    }
+</script>
+<body>
+<p>Transport Method:
+<select id="pathway">
+  <option value="cloud">Cloud</option>
+  <option value="binding">Binding</option>
+</select>
+</p>
+<p> Click on an input or type in to activate it.</p>
+<p> Mouse : <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Input-mouse-2.svg/48px-Input-mouse-2.svg.png" onclick="activate_sensor('1')"> </p>
+<p> Touch Pad : <img src="https://upload.wikimedia.org/wikipedia/commons/9/94/Touchpad_HP.jpg" height="48px" width="48px"  onclick="activate_sensor('2')"> </p>
+<p> Keyboard : <input type="text" oninput="activate_sensor('3')"> </p>
+
+</body>
+</html>

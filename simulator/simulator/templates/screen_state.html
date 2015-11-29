@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Screen State</title>
+    <script>
+        var myVar = setInterval(function(){myTimer()},1500);
+
+    function myTimer()
+    {
+    window.location=window.location;
+    }
+    </script>
+    <style>
+        {% if screen_state == 'ON'%}
+        body {
+            background-color: yellow;
+            }
+        {% endif %}
+        {% if screen_state == 'OFF'%}
+        body {
+            background-color: rgb(100,100,50);
+            }
+        {% endif %}
+        {% if screen_state == 'DIM'%}
+        body {
+            background-color: rgb(100,200,0);
+            }
+        {% endif %}
+
+
+    </style>
+</head>
+<body>
+<p> Screen State: {{screen_state}}</p>
+</body>
+</html>

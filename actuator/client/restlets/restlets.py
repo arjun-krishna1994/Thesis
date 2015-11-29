@@ -147,17 +147,27 @@ class SensorRestlet(CacheControlRestlet):
         ac_state = fp.read()
         fp.close()
         delta_time = self.get_control_variable('time')
+        delta_time2 = self.get_control_variable('time2')#Dim time
         andr = ANDRestlet(False).process_inputs
         islr = IsLargerThanRestlet(False).process_inputs
-        max_time = timedelta(seconds=delta_time)
+        max_time = timedelta(seconds=delta_time) #Max Off Time
+        dim_time = timedelta(seconds=delta_time2)
         cur_time = datetime.datetime.now()
         if andr(andr(islr(cur_time- s1ls , max_time ), islr(cur_time- s2ls , max_time)) , islr(cur_time- s3ls , max_time)):
-            if ac_state == 'ON\n':
+            if ac_state == 'ON\n' or ac_state == 'DIM\n':
                 fp = open('ac_state.txt', 'w+')
                 fp.write("OFF\n")
                 fp.close()
-                print colored('Motion not detected for:' + str(delta_time) +' seconds, turning off AC', 'red')  
+                print colored('Activity not detected for:' + str(delta_time) +' seconds, turning off screen', 'red')  
             if ac_state == 'OFF\n':
+                pass
+        elif andr(andr(islr(cur_time- s1ls , dim_time), islr(cur_time- s2ls , dim_time)) , islr(cur_time- s3ls ,dim_time)):
+            if ac_state == 'ON\n' or ac_state == 'OFF\n':
+                fp = open('ac_state.txt', 'w+')
+                fp.write("DIM\n")
+                fp.close()
+                print colored('Activity not detected for:' + str(delta_time2) +' seconds, dimming screen', 'red')  
+            if ac_state == 'DIM\n':
                 pass
         else:
             if ac_state == 'ON\n':
@@ -166,7 +176,7 @@ class SensorRestlet(CacheControlRestlet):
                 fp = open('ac_state.txt', 'w+')
                 fp.write("ON\n")
                 fp.close()
-                print colored( 'AC turned ON', 'red')           
+                print colored( 'Screen turned ON', 'red')           
         
 
             
